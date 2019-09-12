@@ -3,39 +3,39 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 class Spectrum():
-    def __init__(self):
-        self.datafile = None
+    def __init__(self,datafile):
+        self._datafile = datafile
+
+        # get flux information
+        hdu_list      = fits.open(self._datafile)
+        data          = hdu_list[1].data
+        hd            = hdu_list[0].header
+        self.loglam   = data['loglam']
+        self.flux     = data['flux']        
+
+        # extract header info
+        self.hd       = hd
+        self.ra       = hd['RA']
+        self.dec      = hd['DEC']
+        self.telesope = hd['TELESCOP']
+        self.mjd      = hd['MJD']
 
     def get_spectrum(self):
         '''
         Get the wavelength and flux data of an SDSS spectrum
     
-        datafile = full path to the FITS file you want to get the spectrum for
-    
-        Output:
-    
-        The loglam and flux columns of the fits file.
-    
-        Use:
-    
-        loglam, flux = get_spectrum(datafile)
+        loglam, flux = get_spectrum()
         '''
-        hdu_list = fits.open(self.datafile)
-        data     = hdu_list[1].data
-        hd       = hdu_list[1].header
-        loglam   = data['loglam']
-        flux     = data['flux']
-        return(loglam,flux)
+        return(self.loglam,self.flux)
 
     def find_lines(self,threshold,noise_range=[3.68,3.73],loglam_range=[3.60,3.96],display_lines=True):
         '''
         Find lines with peaks above a specified threshold (in emission only!)
 
-        datafile = Full path to SDSS FITS spectrum
+        threshold    = Given in terms of multiples of the noise, how high the peak must be to be considered a line
 
-        kwargs:
+        KWARGS:
 
-        threshold    = Given in terms of the noise, how high the peak must be to be considered a line
         noise_range  = The range within which to measure the noise
         loglam_range = The range within which to look for interesting lines
         display_lines= Show a graphical representation of where the lines are
@@ -51,7 +51,7 @@ class Spectrum():
         '''
 
         # First, get the data:
-        loglam, flux = self.get_spectrum()
+        loglam, flux = self.loglam, self.flux
 
         # Next, trim the edges:
         good_ind     =  np.where(np.logical_and(loglam>=loglam_range[0],loglam<=loglam_range[1]))
@@ -93,24 +93,18 @@ class Spectrum():
 # Statistical functions go here        
         @property
         def fluxav(self):
-            wave,flux = self.get_spectrum()
-            return np.average(flux)
+            return np.average(self.flux)
     
         @property
         def fluxstd(self):
-            wave,flux = self.get_spectrum()
-            return np.std(flux,ddof=1)
+            return np.std(self.flux,ddof=1)
     
         @property
         def numpix(self):
-            wave,flux = self.get_spectrum()
-            return len(wave)
+            return len(self.flux)
         
         @property
         def chanwidth(self):
-            wave,flux = self.get_spectrum()
-            chanwidth = (wave[-1]-wave[0])/self.numpix
+            chanwidth = (slef.loglam[-1]-self.loglam[0])/self.numpix
             return chanwidth
 
-    def fit_lines(self):
-        pass
