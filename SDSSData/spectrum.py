@@ -29,7 +29,7 @@ class Spectrum():
 
     def find_lines(self,threshold,noise_range=[3.68,3.73],loglam_range=[3.60,3.96],display_lines=True):
         '''
-        Find lines with peaks above a specified threshold (in emission or absorption!)
+        Find lines with peaks above a specified threshold (in emission only!)
 
         datafile = Full path to SDSS FITS spectrum
 
@@ -60,25 +60,27 @@ class Spectrum():
 
         # Now measure the noise:
         noise        = np.std(flux_good[np.where(np.logical_and(loglam_good>=noise_range[0],loglam_good<=noise_range[1]))],ddof=1)
+        mean         = np.mean(flux_good[np.where(np.logical_and(loglam_good>=noise_range[0],loglam_good<=noise_range[1]))])
 
-        peak_cutoff  = noise*threshold
+        peak_cutoff  = mean+(noise*threshold)
 
         # Now search for lines!
-        line_locations = []
-        peak_fluxes    = []
-        line_counter   = []
+        line_locations     = []
+        peak_fluxes        = []
+        line_counter       = []
         line_counter_dummy = 0
         flux_dummy         = 0
         for eachflux,eachloglam in zip(flux_good,loglam_good):
             if eachflux>=peak_cutoff:
-                if flux_dummy>0 and flux_dummy<len(flux_good)-2:
-                    if eachflux > flux_good[flux_dummy-1] and eachflux < flux_good[flux_dummy+1]:
+                if flux_dummy > 0 and flux_dummy < len(flux_good)-2:
+                    if eachflux > flux_good[flux_dummy+1] and eachflux > flux_good[flux_dummy-1]:
                         line_counter.append(line_counter_dummy+1)
                         line_locations.append(eachloglam)
                         peak_fluxes.append(eachflux)
                         line_counter_dummy += 1
             flux_dummy += 1
 
+        # Plot the spectrum with the line locations annotated
         if display_lines == True:
             plt.plot(loglam_good,flux_good)
             for eachline,eachloglam,eachpeakflux in zip(line_counter,line_locations,peak_fluxes):
