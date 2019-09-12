@@ -95,13 +95,13 @@ class Spectrum():
         def fluxav(self):
             wave,flux = self.get_spectrum()
             return np.average(flux)
-    	
-    	@property
+    
+        @property
         def fluxstd(self):
             wave,flux = self.get_spectrum()
             return np.std(flux,ddof=1)
-    	
-    	@property
+    
+        @property
         def numpix(self):
             wave,flux = self.get_spectrum()
             return len(wave)
