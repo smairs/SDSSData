@@ -90,8 +90,27 @@ class Spectrum():
 
         return(line_locations,peak_fluxes)        
 
-    def stats(self):
-        pass
+# Statistical functions go here        
+        @property
+        def fluxav(self):
+            wave,flux = self.get_spectrum()
+            return np.average(flux)
+    	
+    	@property
+        def fluxstd(self):
+            wave,flux = self.get_spectrum()
+            return np.std(flux,ddof=1)
+    	
+    	@property
+        def numpix(self):
+            wave,flux = self.get_spectrum()
+            return len(wave)
+        
+        @property
+        def chanwidth(self):
+            wave,flux = self.get_spectrum()
+            chanwidth = (wave[-1]-wave[0])/self.numpix
+            return chanwidth
 
     def fit_lines(self):
         pass
