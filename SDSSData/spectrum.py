@@ -90,7 +90,7 @@ class Spectrum():
 
         return(line_locations,peak_fluxes)        
 
-    def stats(self):
+def stats(self):
         pass
 
     def fit_lines(self):
