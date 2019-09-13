@@ -1,6 +1,7 @@
 from astropy.io import fits
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.optimize import curve_fit
 
 class Spectrum():
     def __init__(self,datafile):
@@ -113,3 +114,26 @@ class Spectrum():
         chanwidth = (slef.loglam[-1]-self.loglam[0])/self.numpix
         return chanwidth
 
+
+    # Gaussian fit a region!
+    def gaussfit(self,loglam_range,display=True):
+        loglam_in_range = self.loglam[np.where(np.logical_and(self.loglam >= loglam_range[0],self.loglam <= loglam_range[1]))]
+        flux_in_range   = self.flux[np.where(np.logical_and(self.loglam >= loglam_range[0],self.loglam <= loglam_range[1]))]
+        n     = len(loglam_in_range)                   #the number of data
+        mean  = sum(loglam_in_range*flux_in_range)/n              
+        sigma = sum(flux_in_range*(loglam_in_range-mean)**2)/n
+        def gaus(x,a,x0,sigma):
+            return a*np.exp(-(x-x0)**2/(2*sigma**2))
+
+        popt,pcov = curve_fit(gaus,loglam_in_range,flux_in_range,p0=[1,mean,sigma])
+
+        if display == True:
+            plt.plot(loglam_in_range,flux_in_range,color='blue',linestyle='dashed',label='data')
+            plt.plot(loglam_in_range,gaus(loglam_in_range,*popt),color='red',linestyle='dotted',label='fit')
+            plt.legend()
+            plt.title(f'Gaussian Fit for loglam range {loglam_range}')
+            plt.xlabel('loglam')
+            plt.ylabel('Flux')
+            plt.show()
+
+        return(popt,pcov)
