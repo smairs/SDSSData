@@ -20,6 +20,19 @@ class Spectrum():
         self.dec      = hd['DEC']
         self.telesope = hd['TELESCOP']
         self.mjd      = hd['MJD']
+        self.plate    = hd['NAME']
+        self.survey   = hd['PLATETYP']
+        self.exptime  = hd['EXPTIME']
+   
+    # By: smairs
+    def weather(self):
+        print('\nSummary of the Weather:')
+        print('-----------------------\n')
+        print(f"Bolometric Pressure = {self.hd['PRESSURE']}")
+        print(f"Wind Speed          = {self.hd['WINDS']}")
+        print(f"Wind Direction      = {self.hd['WINDD']}")
+        print(f"Air Temperature     = {self.hd['AIRTEMP']}")
+        print(f"Humidity            = {self.hd['HUMIDITY']}\n")
 
     # By: smairs
     def get_spectrum(self):
@@ -106,7 +119,12 @@ class Spectrum():
     @property
     def fluxstd(self):
         return np.std(self.flux,ddof=1)
-    
+
+    # We may want to set our own noise level
+    @fluxstd.setter
+    def fluxstd(self,new_std):
+        self.fluxstd = new_std
+
     @property
     def numpix(self):
         return len(self.flux)
@@ -155,4 +173,5 @@ class Spectrum():
         #l_max=4
 
         return(np.std(data['flux'][(data['loglam'] > l_min) & (data['loglam'] < l_max)]))
-    # 
+
+    
