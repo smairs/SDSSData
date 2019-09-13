@@ -116,7 +116,10 @@ class Spectrum():
 
 
     # Gaussian fit a region!
-    def gaussfit(self,loglam_range,display=True):
+    def gaussfit(self,loglam_range=[3.74,3.755],display=True):
+        '''
+        Fit a guassian to a range of data
+        '''
         loglam_in_range = self.loglam[np.where(np.logical_and(self.loglam >= loglam_range[0],self.loglam <= loglam_range[1]))]
         flux_in_range   = self.flux[np.where(np.logical_and(self.loglam >= loglam_range[0],self.loglam <= loglam_range[1]))]
         n     = len(loglam_in_range)                   #the number of data
