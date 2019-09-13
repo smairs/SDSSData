@@ -6,7 +6,7 @@ class Spectrum():
     def __init__(self,datafile):
         self._datafile = datafile
 
-        # get flux information
+        # get flux information and harvest the header
         hdu_list      = fits.open(self._datafile)
         data          = hdu_list[1].data
         hd            = hdu_list[0].header
@@ -91,20 +91,25 @@ class Spectrum():
         return(line_locations,peak_fluxes)        
 
 # Statistical functions go here        
-        @property
-        def fluxav(self):
-            return np.average(self.flux)
+    @property
+    def fluxav(self):
+        return np.average(self.flux)
+
+# We probably shouldn't allow them to set the average themselves?
+#        @fluxav.setter
+#        def fluxav(self,new_fluxav):
+#            self.fluxav = new_fluxav 
     
-        @property
-        def fluxstd(self):
-            return np.std(self.flux,ddof=1)
+    @property
+    def fluxstd(self):
+        return np.std(self.flux,ddof=1)
     
-        @property
-        def numpix(self):
-            return len(self.flux)
+    @property
+    def numpix(self):
+        return len(self.flux)
         
-        @property
-        def chanwidth(self):
-            chanwidth = (slef.loglam[-1]-self.loglam[0])/self.numpix
-            return chanwidth
+    @property
+    def chanwidth(self):
+        chanwidth = (slef.loglam[-1]-self.loglam[0])/self.numpix
+        return chanwidth
 
