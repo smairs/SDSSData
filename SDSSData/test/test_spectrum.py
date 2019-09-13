@@ -4,11 +4,15 @@
 # spectrum class file - ensuring each function works
 # as expected
 
-import sys
-#Ensure we are able to find spectrum.py
-sys.path.append('../')
+from ..spectrum import Spectrum
 
-from spectrum import Spectrum
+example_fits = 'spectrum.fits'
+
+# Check to ensure header keys exist:
+
+def test_pressure():
+    a = Spectrum(example_fits)
+    assert a.hd.get('PRESSURE') != None, "PRESSURE keyword doesn't exist!"
 
 
 
