@@ -106,7 +106,7 @@ class Spectrum():
 
         return(line_locations,peak_fluxes)        
 
-# Statistical functions go here: By: mrawlings1
+# Statistical functions go here: By: mgrawlings1
     @property
     def fluxav(self):
         return np.average(self.flux)
@@ -138,7 +138,7 @@ class Spectrum():
     # Gaussian fit a region!
     def gaussfit(self,loglam_range=[3.74,3.755],display=True):
         '''
-        Fit a guassian to a range of data
+        Fit a gaussian to a range of data
 
         amp,cen_lam,sigma,pcov = gaussfit()
         '''
