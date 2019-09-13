@@ -44,7 +44,17 @@ class Spectrum():
         return(self.loglam,self.flux)
 
     # By: smairs
-    def find_lines(self,threshold,noise_range=[3.68,3.73],loglam_range=[3.60,3.96],display_lines=True):
+    def showme(self):
+        '''
+        Quick, non-customisable view of the spectrum
+        '''
+        plt.plot(self.loglam,self.flux)
+        plt.ylabel('Flux')
+        plt.xlabel('Loglam')
+        plt.show()
+
+    # By: smairs
+    def find_lines(self,threshold,noise_range=[3.68,3.73],loglam_range=[3.60,3.96],display_lines=False):
         '''
         Find lines with peaks above a specified threshold (in emission only!)
 
@@ -90,10 +100,10 @@ class Spectrum():
             if eachflux>=peak_cutoff:
                 if flux_dummy > 0 and flux_dummy < len(flux_good)-2:
                     if eachflux > flux_good[flux_dummy+1] and eachflux > flux_good[flux_dummy-1]:
-                        line_counter.append(line_counter_dummy+1)
+                        line_counter_dummy+=1
+                        line_counter.append(line_counter_dummy)
                         line_locations.append(eachloglam)
                         peak_fluxes.append(eachflux)
-                        line_counter_dummy += 1
             flux_dummy += 1
 
         # Plot the spectrum with the line locations annotated
@@ -103,8 +113,20 @@ class Spectrum():
                 plt.annotate(str(eachline),(eachloglam,eachpeakflux))
             plt.xlabel('loglam')
             plt.ylabel('Flux')
+            plt.show()
 
         return(line_locations,peak_fluxes)        
+
+    def show_lines(self,thresh):
+        line_locations,peak_fluxes = self.find_lines(thresh)
+        plt.plot(self.loglam,self.flux)
+        line_number = 0
+        for eachloglam,eachflux in zip(line_locations,peak_fluxes):
+            line_number += 1
+            plt.annotate(str(line_number),(eachloglam,eachflux))
+        plt.xlabel('Loglam')
+        plt.ylabel('Flux')
+        plt.show()
 
 # Statistical functions go here: By: mgrawlings1
     @property
