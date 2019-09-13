@@ -1,3 +1,4 @@
+# By: li-jcmt
 from astropy.io import fits
 
 class Observation():
