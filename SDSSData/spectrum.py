@@ -116,7 +116,12 @@ class Spectrum():
 
 
     # Gaussian fit a region!
-    def gaussfit(self,loglam_range,display=True):
+    def gaussfit(self,loglam_range=[3.74,3.755],display=True):
+        '''
+        Fit a guassian to a range of data
+
+        amp,cen_lam,sigma,pcov = gaussfit()
+        '''
         loglam_in_range = self.loglam[np.where(np.logical_and(self.loglam >= loglam_range[0],self.loglam <= loglam_range[1]))]
         flux_in_range   = self.flux[np.where(np.logical_and(self.loglam >= loglam_range[0],self.loglam <= loglam_range[1]))]
         n     = len(loglam_in_range)                   #the number of data
@@ -127,6 +132,8 @@ class Spectrum():
 
         popt,pcov = curve_fit(gaus,loglam_in_range,flux_in_range,p0=[1,mean,sigma])
 
+        amp,cen_lam,sigma = popt[0],popt[1],popt[2]
+
         if display == True:
             plt.plot(loglam_in_range,flux_in_range,color='blue',linestyle='dashed',label='data')
             plt.plot(loglam_in_range,gaus(loglam_in_range,*popt),color='red',linestyle='dotted',label='fit')
@@ -136,4 +143,13 @@ class Spectrum():
             plt.ylabel('Flux')
             plt.show()
 
-        return(popt,pcov)
+        return(amp,cen_lam,sigma,pcov)
+    
+    def get_std(self, l_min ,l_max):
+
+        data = np.array([ x for x in zip(self.loglam, self.flux)], dtype=[('loglam', self.loglam.dtype), ('flux', self.flux.dtype)])
+        #l_min=1
+        #l_max=4
+
+        return(np.std(data['flux'][(data['loglam'] > l_min) & (data['loglam'] < l_max)]))
+    # 
