@@ -144,5 +144,12 @@ class Spectrum():
             plt.show()
 
         return(amp,cen_lam,sigma,pcov)
+    
+    def get_std(self, l_min ,l_max):
 
+        data = np.array([ x for x in zip(self.loglam, self.flux)], dtype=[('loglam', self.loglam.dtype), ('flux', self.flux.dtype)])
+        #l_min=1
+        #l_max=4
+
+        return(np.std(data['flux'][(data['loglam'] > l_min) & (data['loglam'] < l_max)]))
     # 
