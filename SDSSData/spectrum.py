@@ -21,6 +21,7 @@ class Spectrum():
         self.telesope = hd['TELESCOP']
         self.mjd      = hd['MJD']
 
+    # By: smairs
     def get_spectrum(self):
         '''
         Get the wavelength and flux data of an SDSS spectrum
@@ -29,6 +30,7 @@ class Spectrum():
         '''
         return(self.loglam,self.flux)
 
+    # By: smairs
     def find_lines(self,threshold,noise_range=[3.68,3.73],loglam_range=[3.60,3.96],display_lines=True):
         '''
         Find lines with peaks above a specified threshold (in emission only!)
@@ -91,7 +93,7 @@ class Spectrum():
 
         return(line_locations,peak_fluxes)        
 
-# Statistical functions go here        
+# Statistical functions go here: By: mrawlings1
     @property
     def fluxav(self):
         return np.average(self.flux)
@@ -114,7 +116,7 @@ class Spectrum():
         chanwidth = (slef.loglam[-1]-self.loglam[0])/self.numpix
         return chanwidth
 
-
+    # By: smairs
     # Gaussian fit a region!
     def gaussfit(self,loglam_range=[3.74,3.755],display=True):
         '''
@@ -145,6 +147,7 @@ class Spectrum():
 
         return(amp,cen_lam,sigma,pcov)
     
+    # By: izumizuno
     def get_std(self, l_min ,l_max):
 
         data = np.array([ x for x in zip(self.loglam, self.flux)], dtype=[('loglam', self.loglam.dtype), ('flux', self.flux.dtype)])
