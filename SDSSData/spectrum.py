@@ -140,3 +140,5 @@ class Spectrum():
             plt.show()
 
         return(popt,pcov)
+
+    # 
