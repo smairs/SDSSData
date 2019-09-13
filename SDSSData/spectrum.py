@@ -118,6 +118,10 @@ class Spectrum():
         return(line_locations,peak_fluxes)        
 
     def show_lines(self,thresh):
+        '''
+        Show the lines above some SNR threshold
+        This does not include noisy edges
+        '''
         line_locations,peak_fluxes = self.find_lines(thresh)
         plt.plot(self.loglam,self.flux)
         line_number = 0
