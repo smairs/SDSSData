@@ -91,7 +91,7 @@ class Spectrum():
         
     @property
     def chanwidth(self):
-        chanwidth = (slef.loglam[-1]-self.loglam[0])/self.numpix
+        chanwidth = (self.loglam[-1]-self.loglam[0])/self.numpix
         return chanwidth
 
     # By: izumizuno
@@ -122,6 +122,8 @@ class Spectrum():
         print(f"Wind Direction      = {self.winddir}")
         print(f"Air Temperature     = {self.airtemp}")
         print(f"Humidity            = {self.humidity}\n")
+        
+        return(None)
 
 #############
 # Methods to Find and analyse lines
