@@ -123,7 +123,6 @@ class Spectrum():
         print(f"Air Temperature     = {self.airtemp}")
         print(f"Humidity            = {self.humidity}\n")
         
-        return(None)
 
 #############
 # Methods to Find and analyse lines
