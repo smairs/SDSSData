@@ -35,9 +35,9 @@ print(f'a.dec = {a.dec}')
 print(f'a.mjd = {a.mjd}')
 print('')
 
-input('Press Enter to continue...')
-
 print('\n\n--------------------\n\n')
+
+input('Press Enter to continue...\n\n')
 
 ###
 # Weather Summary
@@ -88,9 +88,9 @@ print(a.get_std(3.6,3.9))
 
 print('')
 
-print('Press Enter to continue...')
-
 print('\n\n--------------------\n\n')
+
+input('Press Enter to continue...')
 
 ###
 # showme!
@@ -111,6 +111,8 @@ a.showme()
 
 print('\n\n--------------------\n\n')
 
+input('Press Enter to continue...')
+
 ###
 # get_spectrum
 
@@ -123,9 +125,9 @@ print('\nSave the loglam and flux arrays into variables:\n')
 
 print('>>>loglams,fluxes = a.get_spectrum()')
 
-input('\nPress Enter to continue...')
-
 print('\n\n--------------------\n\n')
+
+input('Press Enter to continue...')
 
 ###
 # find_lines and show_lines
@@ -146,6 +148,8 @@ a.show_lines(5)
 print('')
 
 print('\n\n--------------------\n\n')
+
+input('Press Enter to continue...')
 
 ###
 # Gaussian fits
